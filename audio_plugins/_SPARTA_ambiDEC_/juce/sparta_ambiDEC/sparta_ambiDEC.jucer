@@ -8,7 +8,7 @@
               pluginSilenceInIsSilenceOut="0" pluginEditorRequiresKeys="0"
               pluginAUExportPrefix="sparta_ambiDECAU" pluginRTASCategory=""
               aaxIdentifier="com.yourcompany.panner" pluginAAXCategory="2"
-              jucerVersion="5.4.4" buildVST3="0" buildRTAS="0" buildAAX="0"
+              jucerVersion="5.4.1" buildVST3="0" buildRTAS="0" buildAAX="0"
               pluginManufacturerEmail="support@yourcompany.com" companyName="Aalto"
               companyEmail="leo.t.mccormack@gmail.com" userNotes="_CRT_SECURE_NO_WARNINGS&#10;_WINSOCK_DEPRECATED_NO_WARNINGS&#10;"
               buildAUv3="0" pluginIsMidiEffectPlugin="0" displaySplashScreen="0"
@@ -244,13 +244,14 @@
         <MODULEPATH id="juce_audio_basics" path="../../../../SDKs/modules/"/>
       </MODULEPATHS>
     </XCODE_MAC>
-    <LINUX_MAKE targetFolder="../../make/LinuxMakefile" extraLinkerFlags="-L/usr/lib -lsaf_mkl_custom&#10;-L/lib/x86_64-linux-gnu -lnetcdf"
+    <LINUX_MAKE targetFolder="../../make/LinuxMakefile" extraLinkerFlags="-lsaf_mkl_custom&#10;-lnetcdf&#10;-ljpeg -lpng -lz"
                 extraCompilerFlags="-pedantic" extraDefs="FRAME_SIZE = 128&#10;SAF_USE_INTEL_MKL&#10;SAF_ENABLE_SOFA_READER&#10;">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" targetName="sparta_ambiDEC_debug" linkTimeOptimisation="1"
-                       binaryPath="../../../../lib/" headerPath="../../../../SDKs/Spatial_Audio_Framework/framework/include&#10;../../../../SDKs/Spatial_Audio_Framework/examples/ambi_dec/include&#10;../../../../SDKs/Spatial_Audio_Framework/dependencies/Linux/include&#10;../../../../SDKs/VST2_SDK&#10;/usr/include"/>
+                       binaryPath="../../../../lib/sparta_ambiDEC/" headerPath="../../../../SDKs/Spatial_Audio_Framework/framework/include&#10;../../../../SDKs/Spatial_Audio_Framework/examples/ambi_dec/include&#10;../../../../SDKs/Spatial_Audio_Framework/dependencies/Linux/include&#10;../../../../SDKs/VST2_SDK&#10;/usr/include"/>
         <CONFIGURATION isDebug="0" name="Release" headerPath="../../../../SDKs/Spatial_Audio_Framework/framework/include&#10;../../../../SDKs/Spatial_Audio_Framework/examples/ambi_dec/include&#10;../../../../SDKs/Spatial_Audio_Framework/dependencies/Linux/include&#10;../../../../SDKs/VST2_SDK&#10;/usr/include"
-                       binaryPath="../../../../lib/" linkTimeOptimisation="1" targetName="sparta_ambiDEC"/>
+                       binaryPath="../../../../lib/sparta_ambiDEC/" linkTimeOptimisation="1"
+                       targetName="sparta_ambiDEC"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_opengl" path="../../../../SDKs/modules/"/>
@@ -269,7 +270,7 @@
       </MODULEPATHS>
     </LINUX_MAKE>
     <LINUX_MAKE targetFolder="../../make/LinuxMakefileRaspberryPI" extraDefs="FRAME_SIZE = 128&#10;SAF_USE_OPEN_BLAS_AND_LAPACKE&#10;SAF_ENABLE_SOFA_READER&#10;"
-                extraLinkerFlags="-L/usr/lib/arm-linux-gnueabihf -lopenblas  -llapacke -lnetcdf">
+                extraLinkerFlags="-L/usr/lib/arm-linux-gnueabihf -lopenblas  -llapacke -lnetcdf  -lz -ljpeg -lpng">
       <CONFIGURATIONS>
         <CONFIGURATION isDebug="1" name="Debug" targetName="sparta_ambiDEC_debug" binaryPath="../../../../lib/"
                        headerPath="../../../../SDKs/Spatial_Audio_Framework/framework/include&#10;../../../../SDKs/Spatial_Audio_Framework/examples/ambi_dec/include&#10;../../../../SDKs/VST2_SDK&#10;/usr/include&#10;/usr/include/arm-linux-gnueabihf&#10;"/>
@@ -312,5 +313,6 @@
   <LIVE_SETTINGS>
     <WINDOWS/>
     <OSX/>
+    <LINUX/>
   </LIVE_SETTINGS>
 </JUCERPROJECT>

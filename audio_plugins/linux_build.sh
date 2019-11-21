@@ -28,6 +28,8 @@ projuce=0
 
 # location of plugin binaries
 binaries="../lib"
+# create it
+mkdir -p "${binaries}"
 
 i=$#
 while [ $i -gt 0 ]; do
@@ -53,7 +55,7 @@ while [ $i -gt 0 ]; do
   shift
 done
 
-if [ $(( info + build + projucer + projuce )) -eq 0 ]; then help=1; fi
+if [ $(( info + projucer + projuce + clean + build )) -eq 0 ]; then help=1; fi
 if [ ${help} -gt 0 ]; then
   echo "${help_message}"
   exit
@@ -82,7 +84,7 @@ fi
   -exec Projucer --resave "{}" \;
 
 # cleaning)
-[ ${build} -gt 0 ] && find "${from}" -type d -name "LinuxMakefile" \
+[ ${clean} -gt 0 ] && find "${from}" -type d -name "LinuxMakefile" \
   -exec bash -c "cd \"{}\" && make CONFIG=Release clean" \;
 
 # building

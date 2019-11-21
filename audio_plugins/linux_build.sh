@@ -18,7 +18,6 @@ ex: \"_SPARTA_ambiBIN_ build -j6\" builds _SPARTA_ambiBIN_ using 6 cores
 ex: \"projuce clean build\" generates all Projucer files, clean and build all plugins
 "
 
-from="."
 help=0
 info=0
 build=0
@@ -27,15 +26,20 @@ projucer=0
 projuce=0
 
 # location of plugin binaries
-binaries="../lib"
+binaries="${SCRIPT_PATH}/../lib"
 # create it
 mkdir -p "${binaries}"
+
+SCRIPT_PATH=$(dirname `which $0`)
+from="${SCRIPT_PATH}"
+SDKs="${SCRIPT_PATH}/../SDKs"
+
 
 i=$#
 while [ $i -gt 0 ]; do
   var=$1
   if [ -d ${var} ]; then
-    from=${var}
+    from="${var}"
   elif [ ${var} == "help" ]; then
     help=1
   elif [ ${var} == "info" ]; then
@@ -61,13 +65,26 @@ if [ ${help} -gt 0 ]; then
   exit
 fi
 
+# location of Projucer app: priority to the one built from source
+projucer_from_source="${SDKs}/JUCE/extras/Projucer/Builds/LinuxMakefile/build/Projucer"
+projucer_app="${projucer_from_source}"
+[ ! -f ${projucer_app} ] && projucer_app=$(which Projucer)
+if [ ! ${projucer_app} ] || [ ! -f ${projucer_app} ]; then
+  echo "Projucer is not installed"
+  echo "On Debian (and Ubuntu), install the \"juce-tools\" package"
+  echo "or compile a GPL enabled version using this script:"
+  echo "${SDKs}/linux-build-projucer.sh"
+  echo "or install Projucer and set the \"projucer_app\" variable in this script"
+  exit
+fi
 
 if [ ${info} -gt 0 ]; then
   if [ ${from} = "." ]; then
     ls -Rl --color ${binaries}
   else
     jucer=$(find "${from}" -type f -name "*.jucer")
-    status="$(Projucer --status ${jucer} 2>&1)"
+    status="$(${projucer_app} --status ${jucer} 2>&1)"
+    name=$(echo "${status}" | grep Name | cut -c 7-)
     echo "${status}"
     name=$(echo "${status}" | grep Name | cut -c 7-)
     ls -Rl --color ${binaries}/${name}
@@ -76,12 +93,12 @@ if [ ${info} -gt 0 ]; then
 fi
 
 # opening Projucer editor
-[ ${projucer} -gt 0 ] && find ${from} -type f -name "*.jucer" \
-  -exec Projucer "{}" \;
+[ ${projucer} -gt 0 ] && find "${from}" -type f -name "*.jucer" \
+  -exec ${projucer_app} "{}" \;
 
 # projucing (resaving Projucer files)
-[ ${projuce} -gt 0 ] && find ${from} -type f -name "*.jucer" \
-  -exec Projucer --resave "{}" \;
+[ ${projuce} -gt 0 ] && find "${from}" -type f -name "*.jucer" \
+  -exec ${projucer_app} --resave "{}" \;
 
 # cleaning)
 [ ${clean} -gt 0 ] && find "${from}" -type d -name "LinuxMakefile" \

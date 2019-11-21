@@ -61,15 +61,15 @@ if [ ${help} -gt 0 ]; then
   exit
 fi
 
-jucer=$(find "${from}" -type f -name "*.jucer")
-status="$(Projucer --status ${jucer} 2>&1)"
-name=$(echo "${status}" | grep Name | cut -c 7-)
 
 if [ ${info} -gt 0 ]; then
   if [ ${from} = "." ]; then
     ls -Rl --color ${binaries}
   else
+    jucer=$(find "${from}" -type f -name "*.jucer")
+    status="$(Projucer --status ${jucer} 2>&1)"
     echo "${status}"
+    name=$(echo "${status}" | grep Name | cut -c 7-)
     ls -Rl --color ${binaries}/${name}
   fi
   exit
